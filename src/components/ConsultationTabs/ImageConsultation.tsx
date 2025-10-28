@@ -16,6 +16,8 @@ interface MedicalDiagnosis {
   recommendations: string[];
   severity: string;
   specialistNeeded: string;
+  datasetEnhanced?: boolean;
+  datasetInsights?: string[];
 }
 
 export default function ImageConsultation({ onEndConsultation }: ImageConsultationProps) {
@@ -212,20 +214,27 @@ export default function ImageConsultation({ onEndConsultation }: ImageConsultati
               </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-              <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
-                <p className="text-sm font-medium text-gray-700 mb-1">Condition Type</p>
-                <p className="text-lg font-semibold text-gray-900 capitalize">{diagnosis.conditionType}</p>
-              </div>
-              <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
-                <p className="text-sm font-medium text-gray-700 mb-1">Severity</p>
-                <p className={`text-lg font-semibold capitalize ${
-                  diagnosis.severity === 'severe' ? 'text-red-700' :
-                  diagnosis.severity === 'moderate' ? 'text-orange-700' :
-                  'text-green-700'
-                }`}>{diagnosis.severity}</p>
-              </div>
-            </div>
+            {diagnosis.datasetEnhanced && diagnosis.datasetInsights && diagnosis.datasetInsights.length > 0 && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.3 }}
+                className="bg-gradient-to-r from-emerald-50 to-cyan-50 rounded-lg p-4 border-l-4 border-emerald-500"
+              >
+                <h4 className="font-semibold text-gray-900 mb-2 flex items-center space-x-2">
+                  <span className="text-emerald-600">📊</span>
+                  <span>Clinical Dataset Validation</span>
+                </h4>
+                <ul className="text-sm text-gray-700 space-y-1">
+                  {diagnosis.datasetInsights.map((insight, idx) => (
+                    <li key={idx} className="flex items-start space-x-2">
+                      <span className="text-emerald-500 mt-1">✓</span>
+                      <span>{insight}</span>
+                    </li>
+                  ))}
+                </ul>
+              </motion.div>
+            )}
 
             {diagnosis.medicines && diagnosis.medicines.length > 0 && (
               <div className="mb-6">

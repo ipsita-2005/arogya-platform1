@@ -46,3 +46,11 @@ env/
 
 # Optional eslint cache
 .eslintcache
+
+# Large model files (use Git LFS or external storage)
+# These files are too large for GitHub and should be stored separately
+# See DATASET_INTEGRATION_GUIDE.md for dataset information
+dataset/*.h5
+dataset/*.pkl
+!dataset/*.json
+!dataset/*.md
